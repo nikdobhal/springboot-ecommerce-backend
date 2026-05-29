@@ -6,6 +6,11 @@ public class CategoryResponse {
 
     private List<CategoryDTO> content;
 
-    public void setcontent(List<CategoryDTO> categoryDtos) {
+    public List<CategoryDTO> getContent() {
+        return content;
+    }
+
+    public void setContent(List<CategoryDTO> content) {
+        this.content = content;
     }
 }
