@@ -3,7 +3,10 @@ package com.ecommerce.project.serviice;
 import com.ecommerce.project.Exceptions.APIException;
 import com.ecommerce.project.Exceptions.ResourceNotFoundException;
 import com.ecommerce.project.model.Category;
+import com.ecommerce.project.payLoad.CategoryDTO;
+import com.ecommerce.project.payLoad.CategoryResponse;
 import com.ecommerce.project.repositories.CategoryRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +19,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
 
     @Override
-    public List<Category> getAllCategories() {
+    public CategoryResponse getAllCategories() {
        List<Category> categories = categoryRepository.findAll();
 
        if(categories.isEmpty()){
@@ -26,7 +32,12 @@ public class CategoryServiceImpl implements CategoryService {
 
        }
 
-        return categories;
+       List<CategoryDTO> categoryDtos = categories.stream()
+               .map(category -> modelMapper.map(category, CategoryDTO.class))
+               .toList();
+       CategoryResponse Categoryresponse = new CategoryResponse();
+        Categoryresponse.setcontent(categoryDtos);
+        return Categoryresponse;
     }
 
     @Override

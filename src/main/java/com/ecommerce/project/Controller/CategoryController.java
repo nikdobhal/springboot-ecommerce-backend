@@ -1,6 +1,8 @@
 package com.ecommerce.project.Controller;
 
 import com.ecommerce.project.model.Category;
+import com.ecommerce.project.payLoad.CategoryDTO;
+import com.ecommerce.project.payLoad.CategoryResponse;
 import com.ecommerce.project.serviice.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -22,8 +24,9 @@ public class CategoryController {
     }
 
     @GetMapping({"/public/categories", "/api/public/Categories"})
-    public List<Category> getAllCategories(){
-        return categoryService.getAllCategories();
+    public ResponseEntity<CategoryResponse> getAllCategories(){
+        CategoryResponse categoryResponse =categoryService.getAllCategories();
+        return new ResponseEntity<>(categoryResponse, HttpStatus.BAD_REQUEST);
 
     }
     @PostMapping({"/public/categories", "/api/public/Categories"})
