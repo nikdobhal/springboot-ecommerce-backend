@@ -1,7 +1,6 @@
 package com.ecommerce.project.serviice;
 
 import com.ecommerce.project.model.Category;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
