@@ -13,47 +13,44 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-
 public class MyGlobalExceptionHandler {
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-public ResponseEntity<Map<String, String>> myMethodArgumentNotValidException(MethodArgumentNotValidException e){
-    Map<String, String> response = new HashMap<>();
+    public ResponseEntity<Map<String, String>> myMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        Map<String, String> response = new HashMap<>();
+        e.getBindingResult().getAllErrors().forEach(err -> {
+            String fieldName = ((FieldError) err).getField();
+            String message = err.getDefaultMessage();
+            response.put(fieldName, message);
+        });
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
-    e.getBindingResult().getAllErrors().forEach(err -> {
-        String FieldName = ((FieldError)err).getField();
-        String Message = err.getDefaultMessage();
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<APIresponse> myResourceNotFoundException(ResourceNotFoundException e) {
+        String message = e.getMessage();
+        APIresponse apiResponse = new APIresponse(message, false);
+        return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
+    }
 
-         response.put(FieldName, Message);
-    });
-return new ResponseEntity<Map<String, String>>(response, HttpStatus.BAD_REQUEST);
-}
+    //  Catch HttpMessageNotReadableException → throw our custom InvalidRequestException
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<APIresponse> myHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        throw new InvalidRequestException("Invalid request body: " + e.getMostSpecificCause().getMessage());
+    }
 
-@ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<APIresponse> myResourceNotFoundException(ResourceNotFoundException e){
- String Message = e.getMessage();
- APIresponse apiResponse = new APIresponse(Message, false);
-
-
-
- return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
-
-
-
-}
-@ExceptionHandler(HttpMessageNotReadableException.class)
-public ResponseEntity<APIresponse> myHttpMessageNotReadableException(HttpMessageNotReadableException e){
- String message = "Invalid request body. Select raw JSON in Postman and send product fields only.";
- APIresponse apiResponse = new APIresponse(message, false);
-
- return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
-}
-@ExceptionHandler(APIException.class)
-public ResponseEntity<APIresponse> myAPIException(APIException e){
- String message = e.getMessage();
- APIresponse apiResponse = new APIresponse(message, false);
-
+    //  Handle our custom InvalidRequestException
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<APIresponse> myInvalidRequestException(InvalidRequestException e) {
+        String message = e.getMessage();
+        APIresponse apiResponse = new APIresponse(message, false);
         return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
-}
+    }
 
-
+    @ExceptionHandler(APIException.class)
+    public ResponseEntity<APIresponse> myAPIException(APIException e) {
+        String message = e.getMessage();
+        APIresponse apiResponse = new APIresponse(message, false);
+        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
+    }
 }
