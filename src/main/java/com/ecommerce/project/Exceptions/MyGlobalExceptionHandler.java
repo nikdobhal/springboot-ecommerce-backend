@@ -3,6 +3,7 @@ package com.ecommerce.project.Exceptions;
 import com.ecommerce.project.payLoad.APIresponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,10 +35,17 @@ return new ResponseEntity<Map<String, String>>(response, HttpStatus.BAD_REQUEST)
 
 
 
+ return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
+
+
+
+}
+@ExceptionHandler(HttpMessageNotReadableException.class)
+public ResponseEntity<APIresponse> myHttpMessageNotReadableException(HttpMessageNotReadableException e){
+ String message = "Invalid request body. Select raw JSON in Postman and send product fields only.";
+ APIresponse apiResponse = new APIresponse(message, false);
+
  return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
-
-
-
 }
 @ExceptionHandler(APIException.class)
 public ResponseEntity<APIresponse> myAPIException(APIException e){
@@ -46,4 +54,6 @@ public ResponseEntity<APIresponse> myAPIException(APIException e){
 
         return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
 }
+
+
 }

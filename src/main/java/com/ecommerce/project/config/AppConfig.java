@@ -1,6 +1,5 @@
 package com.ecommerce.project.config;
 
-import com.ecommerce.project.payLoad.CategoryDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
