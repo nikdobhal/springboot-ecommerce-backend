@@ -39,6 +39,13 @@ ProductDTO savedprOductDTO = productService.createProduct(productDTO, categoryId
 
     }
 
+    @GetMapping("/public/categories/{categoryId}/Products")
+public ResponseEntity<ProductResponse> getProductsByCategory(@PathVariable Long categoryId){
 
+      ProductResponse productResponse = productService.getProductsByCategory(categoryId);
+
+      return new ResponseEntity<>(productResponse, HttpStatus.OK);
+
+}
 
 }
