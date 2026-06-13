@@ -47,5 +47,11 @@ public ResponseEntity<ProductResponse> getProductsByCategory(@PathVariable Long 
       return new ResponseEntity<>(productResponse, HttpStatus.OK);
 
 }
+@GetMapping("/public/Products/keyword/{Keyword}")
+public ResponseEntity<ProductResponse> getProductsByKeyword( @PathVariable String Keyword){
+    ProductResponse productResponse = productService.getProductsByKeyword(Keyword);
+
+    return new ResponseEntity<>(productResponse, HttpStatus.FOUND);
+}
 
 }
