@@ -58,8 +58,17 @@ public ResponseEntity<ProductResponse> getProductsByKeyword( @PathVariable Strin
 public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO productDTO,
                                                 @PathVariable Long productId){
 
-    ProductDTO savedProductDTO = productService.updateProduct(productDTO, productId);
-    return new ResponseEntity<>(savedProductDTO, HttpStatus.OK);
+    ProductDTO savedProduct = productService.updateProduct(productDTO, productId);
+    return new ResponseEntity<>(savedProduct, HttpStatus.OK);
+
+}
+
+@DeleteMapping("/admin/Products/{productId}")
+public ResponseEntity<ProductDTO> deleteProduct(@PathVariable Long productId){
+
+        ProductDTO deleteProduct = productService.deleteProduct(productId);
+
+        return new ResponseEntity<>(deleteProduct, HttpStatus.OK);
 
 }
 
