@@ -54,4 +54,13 @@ public ResponseEntity<ProductResponse> getProductsByKeyword( @PathVariable Strin
     return new ResponseEntity<>(productResponse, HttpStatus.FOUND);
 }
 
+@PutMapping("/admin/Products/{productId}")
+public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO productDTO,
+                                                @PathVariable Long productId){
+
+    ProductDTO savedProductDTO = productService.updateProduct(productDTO, productId);
+    return new ResponseEntity<>(savedProductDTO, HttpStatus.OK);
+
+}
+
 }

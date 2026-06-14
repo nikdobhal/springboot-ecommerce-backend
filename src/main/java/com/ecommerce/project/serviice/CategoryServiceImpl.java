@@ -85,6 +85,7 @@ return savedCategoryDTO;
         savedCategory.setCategoryName(categoryDTO.getCategoryName());
         Category updatedCategory = categoryRepository.save(savedCategory);
 
+
         return modelMapper.map(updatedCategory, CategoryDTO.class);
 
     }

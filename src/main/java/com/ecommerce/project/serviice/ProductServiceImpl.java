@@ -3,6 +3,7 @@ package com.ecommerce.project.serviice;
 import com.ecommerce.project.Exceptions.ResourceNotFoundException;
 import com.ecommerce.project.model.Category;
 import com.ecommerce.project.model.Product;
+import com.ecommerce.project.payLoad.CategoryDTO;
 import com.ecommerce.project.payLoad.ProductDTO;
 import com.ecommerce.project.payLoad.ProductResponse;
 import com.ecommerce.project.repositories.CategoryRepository;
@@ -88,6 +89,22 @@ public class ProductServiceImpl implements ProductService {
         productResponse.setContent(productsDTO);
 
         return productResponse;
+    }
+
+    @Override
+    public ProductDTO updateProduct(ProductDTO productDTO, Long productId) {
+    Product savedProduct = productRepository.findById(productId)
+          .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+
+        savedProduct.setProductName(productDTO.getProductName());
+        savedProduct.setDescription(productDTO.getDescription());
+        savedProduct.setQuantity(productDTO.getQuantity());
+        savedProduct.setPrice(productDTO.getPrice());
+        savedProduct.setDiscount(productDTO.getDiscount());
+        savedProduct.setSpecialPrice(productDTO.getSpecialPrice());
+        Product updatedProduct = productRepository.save(savedProduct);
+
+        return   modelMapper.map(updatedProduct, ProductDTO.class) ;
     }
 
 

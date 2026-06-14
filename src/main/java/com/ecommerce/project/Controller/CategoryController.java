@@ -4,6 +4,7 @@ package com.ecommerce.project.Controller;
 import com.ecommerce.project.config.AppConstants;
 import com.ecommerce.project.payLoad.CategoryDTO;
 import com.ecommerce.project.payLoad.CategoryResponse;
+import com.ecommerce.project.payLoad.ProductDTO;
 import com.ecommerce.project.serviice.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
