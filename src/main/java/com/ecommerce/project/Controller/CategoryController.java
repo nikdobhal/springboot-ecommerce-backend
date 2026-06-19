@@ -4,7 +4,6 @@ package com.ecommerce.project.Controller;
 import com.ecommerce.project.config.AppConstants;
 import com.ecommerce.project.payLoad.CategoryDTO;
 import com.ecommerce.project.payLoad.CategoryResponse;
-import com.ecommerce.project.payLoad.ProductDTO;
 import com.ecommerce.project.serviice.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -27,7 +26,7 @@ public class CategoryController {
             (
                     @RequestParam(name="pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
                      @RequestParam(name="pageSize",defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
-                    @RequestParam(name="sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+                    @RequestParam(name="sortBy", defaultValue = AppConstants.SORT_CATEGORIES_BY, required = false) String sortBy,
                     @RequestParam(name="sortOrder", defaultValue = AppConstants.SORT_ORDER, required = false) String sortOrder
             ){
 

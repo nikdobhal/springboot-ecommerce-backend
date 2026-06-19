@@ -30,6 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
                               ? Sort.by(sortBy).ascending()
                               : Sort.by(sortBy).descending();
         Pageable pageDetails = PageRequest.of(pageNumber, pageSize,sortByandOrder );
+
         Page<Category> pageCategory = categoryRepository.findAll(pageDetails);
        List<Category> categories = pageCategory.getContent();
 
