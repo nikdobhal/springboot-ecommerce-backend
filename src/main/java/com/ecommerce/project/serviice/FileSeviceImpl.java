@@ -23,7 +23,7 @@ public class FileSeviceImpl implements FileService{
 
         File folder = new File(path);
         if(!folder.exists()){
-            folder.mkdir();
+            folder.mkdirs();
 
         }
 

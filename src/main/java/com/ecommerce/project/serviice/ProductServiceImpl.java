@@ -1,5 +1,6 @@
 package com.ecommerce.project.serviice;
 
+import com.ecommerce.project.Exceptions.APIException;
 import com.ecommerce.project.Exceptions.ResourceNotFoundException;
 import com.ecommerce.project.model.Category;
 import com.ecommerce.project.model.Product;
@@ -40,20 +41,41 @@ public class ProductServiceImpl implements ProductService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "CategoryId", categoryId));
 
+        List<Product> products = category.getProducts();
+        boolean isProductNotPresent = true;
 
-        Product product = modelMapper.map(productDTO, Product.class);
+        for(Product value : products){
+            if(value.getProductName().equals(productDTO.getProductName())){
+                isProductNotPresent = false;
+                break;
 
-        product.setImage("Default.png");
-        product.setCategory(category);
+            }
 
-
-        double specialPrice = product.getPrice() - ((product.getDiscount() * 0.01) * product.getPrice());
-        product.setSpecialPrice(specialPrice);
-
-        Product savedProduct = productRepository.save(product);
+        }
 
 
-        return modelMapper.map(savedProduct, ProductDTO.class);
+
+if(isProductNotPresent){
+    Product product = modelMapper.map(productDTO, Product.class);
+
+    product.setImage("Default.png");
+    product.setCategory(category);
+
+
+    double specialPrice = product.getPrice() - ((product.getDiscount() * 0.01) * product.getPrice());
+    product.setSpecialPrice(specialPrice);
+
+    Product savedProduct = productRepository.save(product);
+
+
+    return modelMapper.map(savedProduct, ProductDTO.class);
+
+}else {
+
+    throw new APIException("Product already Exists!");
+}
+
+
     }
 
     @Override
@@ -62,6 +84,11 @@ public class ProductServiceImpl implements ProductService {
         List<ProductDTO> productsDTO = products.stream()
                 .map(product ->modelMapper.map(product, ProductDTO.class))
                 .toList();
+        if(products.isEmpty()){
+
+            throw  new APIException("No Products Exist");
+
+        }
 
         ProductResponse productResponse = new ProductResponse();
 
